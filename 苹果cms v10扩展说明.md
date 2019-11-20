@@ -12,7 +12,7 @@
 
 https://www.lanzous.com/b204882 （蓝奏云盘下载）
 
-https://github.com/magicblack?tab=repositories（github下载）
+https://github.com/magicblack?tab=repositories （github下载）
 
 教程下载：
 
