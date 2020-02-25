@@ -344,6 +344,50 @@ function mac_send_mail($to, $title, $body,$conf=[]) {
     return $mail->send();
 }
 
+function mac_check_back_link($url)
+{
+    $res=[];
+    $res['code'] = 0;
+    $res['msg'] = '参数错误';
+
+    if(empty($url)){
+        return json($res);
+    }
+
+    $site_url = $GLOBALS['config']['site']['site_url'];
+    $site_wapurl = $GLOBALS['config']['site']['site_wapurl'];
+    $html = mac_curl_get($url);
+    $msg = '';
+    $code = 1;
+
+    $ok = '反链正常';
+    $err = '反链异常';
+
+    $msg .= '['.$site_url.']';
+    if(strpos($html,$site_url)!==false){
+        $code=1;
+        $msg .=$ok;
+    }
+    else{
+        $code=101;
+        $msg .=$err;
+    }
+
+    $msg .= '，['.$site_wapurl.']';
+    if(strpos($html,$site_wapurl)!==false){
+        $code =1;
+        $msg .=$ok;
+    }
+    else{
+        $code=101;
+        $msg .=$err;
+    }
+    $res['code'] = $code;
+    $res['msg'] = $msg;
+
+    return $res;
+}
+
 function mac_list_to_tree($list, $pk='id',$pid = 'pid',$child = 'child',$root=0)
 {
     $tree = array();
@@ -854,6 +898,11 @@ function mac_unescape($str)
 }
 
 /*特殊字段的值转换*/
+function mac_get_mid_code($data)
+{
+    $arr = [1=>'vod',2=>'art',3=>'topic',4=>'commment',5=>'gbook',6=>'user',7=>'label',8=>'actor',9=>'role',10=>'plot',11=>'website'];
+    return $arr[$data];
+}
 function mac_get_mid_text($data)
 {
     $arr = [1=>'视频',2=>'文章',3=>'专题',4=>'评论',5=>'留言',6=>'用户中心',7=>'自定义页面',8=>'演员',9=>'角色',10=>'剧情',11=>'网址'];
@@ -2158,7 +2207,7 @@ function mac_label_type($param)
 
 function mac_data_count($tid=0,$range='all',$flag='vod')
 {
-    if(!in_array($flag,['vod','art','actor','role','topic'])) {
+    if(!in_array($flag,['vod','art','actor','role','topic','website'])) {
         $flag='vod';
     }
     if(!in_array($range,['all','today','min'])){

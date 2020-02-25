@@ -304,6 +304,9 @@ class User extends Base
         $data = [];
         $data['user_id'] = $GLOBALS['user']['user_id'];
         $data['user_name'] = $GLOBALS['user']['user_name'];
+        if(!empty($param['user_nick_name'])){
+            $data['user_nick_name'] = htmlspecialchars(urldecode(trim($param['user_nick_name'])));
+        }
         $data['user_qq'] = htmlspecialchars(urldecode(trim($param['user_qq'])));
         $data['user_question'] = htmlspecialchars(urldecode(trim($param['user_question'])));
         $data['user_answer'] = htmlspecialchars(urldecode(trim($param['user_answer'])));
@@ -648,7 +651,7 @@ class User extends Base
             $msg = $sign.'的会员您好，'.$GLOBALS['user']['user_name'].'。'.$type_des.'验证码为：'. $code .',请在5分钟内完成验证。' ;
             $msg = str_replace(['[用户]','[类型]','[时长]','[验证码]'],[$GLOBALS['user']['user_name'],$type_des,'5',$code],$msg);
 
-            $res_send = mac_send_mail($to, $sign.$title, $sign.$msg);
+            $res_send = mac_send_mail($to, $sign.$title, $msg);
             if($res_send){
                 $r=1;
             }

@@ -42,7 +42,6 @@ class Actor extends Base
             $where['actor_name'] = ['like','%'.$param['wd'].'%'];
         }
 
-
         $order='actor_time desc';
         $res = model('Actor')->listData($where,$order,$param['page'],$param['limit']);
 
@@ -66,7 +65,6 @@ class Actor extends Base
     {
         if (Request()->isPost()) {
             $param = input('post.');
-            $param['actor_content'] = str_replace( $GLOBALS['config']['upload']['protocol'].':','mac:',$param['actor_content']);
             $res = model('Actor')->saveData($param);
             if($res['code']>1){
                 return $this->error($res['msg']);

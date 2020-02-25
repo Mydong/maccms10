@@ -212,6 +212,7 @@ class Collect extends Base {
             $array_data[$key]['vod_id'] = (string)$video->id;
             //$array_data[$key]['type_id'] = (string)$video->tid;
             $array_data[$key]['vod_name'] = (string)$video->name;
+            $array_data[$key]['vod_sub'] = (string)$video->subname;
             $array_data[$key]['vod_remarks'] = (string)$video->note;
             $array_data[$key]['type_name'] = (string)$video->type;
             $array_data[$key]['vod_pic'] = (string)$video->pic;
@@ -1695,6 +1696,7 @@ class Collect extends Base {
 
                 if($blend===false){
                     $vod_info = model('Vod')->where($where2)->find();
+
                 }
                 else{
                     $vod_info = model('Vod')->where($where2)
@@ -1710,7 +1712,7 @@ class Collect extends Base {
                 }
                 else {
                     $v['role_rid'] = $vod_info['vod_id'];
-
+                    $where['role_rid'] = $vod_info['vod_id'];
                     $info = model('Role')->where($where)->find();
                     if (!$info) {
                         $tmp = $this->syncImages($config['pic'], $v['role_pic'], 'role');
